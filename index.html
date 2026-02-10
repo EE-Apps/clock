@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Clock & Alarm EE</title>
+    <link rel="icon" href="img/icon.svg">
+    <link rel="stylesheet" href="eelibs/import.css">
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body style="display: flex;">
+    <div id="nav" class="">
+        <button id="openmenu" onclick="openNavPanel()"><img src="img/ui/lines.svg"></button>
+        <div id="navcontent"></div>
+    </div>
+    <div id="content" class="">
+        <div class="page" id="settings"></div>
+        <div class="page block" id="home">
+            <div id="worldTime"></div>
+        </div>
+        <div class="page" id="alarm"></div>
+        <div class="page" id="timer"></div>
+        <div class="page" id="seconds"></div>
+        <div class="page block" id="about">
+            <section>
+                <p>Это пример HTML-страницы, демонстрирующей различные HTML-элементы без применения CSS-стилей.</p>
+            </section>
+        </div>
+        <div id="navdown" class=""></div>
+    </div>
+
+</body>
+<script src="eelibs/import.js" type="module"></script>
+<script src="index.js" type="module"></script>
+<script src="js/time.js" type="module"></script>
+<script src="js/showTime.js" type="module"></script>
+</html>

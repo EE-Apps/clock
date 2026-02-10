@@ -1,0 +1,73 @@
+@font-face {
+    font-family: clock;
+    src: url(../fonts/eeclock.ttf);
+}
+@font-face {
+    font-family: clock-light;
+    src: url(../fonts/eeclock-light.ttf);
+}
+
+#home .page-header {
+    display: inline-flex;
+    flex-direction: column;
+    gap: var(--ds)
+}
+
+#timeDiv {
+    display: inline-flex;
+    flex-direction: row;
+
+    .timeHours {
+        font-family: clock;
+    }
+    .timeMinutes, .timeSeconds {
+        font-family: clock-light;
+    }
+}
+
+.world-clock-item {
+    padding: var(--ds);
+    background-color: var(--bg-sec);
+    border-radius: var(--br);
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex: 1;
+    max-width: calc(100% - 2 * var(--ds));
+
+    .cityName {
+        margin: 0;
+    }
+    .timeOfCity {
+        font-family: clock-light;
+        margin: 0;
+    }
+    
+    .rightBlock {
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}
+
+.time-diff {
+    font-size: 0.85em;
+    /*color: #666;*/
+    margin: 2px 0 4px;
+    font-style: italic;
+}
+.time-diff.current {
+    color: #2ecc71;
+    font-weight: 500;
+    font-style: normal;
+}
+.time-diff.error {
+    color: #e74c3c;
+}
+
+#worldTime {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: var(--ds);
+}
