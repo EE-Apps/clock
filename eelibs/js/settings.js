@@ -71,11 +71,9 @@ class SettingsManager {
             sectionEl.className = "settings-section";
 
             sectionEl.innerHTML = `
-                <div class="settings-header">
+                <div class="settings-header hideSettSection" data-section="sett-${sectionKey}">
                     <h2>${section.title}</h2>
-                    <button class="hideSettSection" data-section="sett-${sectionKey}">
-                        <img src="img/ui/arrow/up.svg" style="rotate: 90deg;">
-                    </button>
+                    <img src="img/ui/arrow/up.svg" style="rotate: 90deg;">
                 </div>
                 <div id="sett-${sectionKey}" class="settingsSectionDiv" style="height: 0px;"></div>
             `;
@@ -86,10 +84,12 @@ class SettingsManager {
                 if (targetEl.style.height === '0px') {
                     targetEl.style.height = targetEl.scrollHeight + 'px';
                     e.currentTarget.querySelector('img').style.rotate = '0deg';
+                    sectionEl.classList.add('active');
                     targetEl.classList.add('active');
                 } else {
                     targetEl.style.height = '0px';
                     e.currentTarget.querySelector('img').style.rotate = '90deg';
+                    sectionEl.classList.remove('active');
                     targetEl.classList.remove('active');
                 }
             };

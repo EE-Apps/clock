@@ -13,6 +13,17 @@
     height: var(--switch-height);
 
     display: block;
+
+
+
+    &:hover {
+        .slider:before {
+            height: calc(0.75 * var(--thumb-size)) !important;
+            width: calc(0.75 * var(--thumb-size)) !important;
+            left: 8px !important;
+            bottom: 5.5px !important;
+        }
+    }
 }
 
 /* Скрываем дефолтный чекбокс */

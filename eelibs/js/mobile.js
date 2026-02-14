@@ -1,9 +1,9 @@
 const mql = window.matchMedia("(orientation: landscape)");
 
 const handleOrientation = (e) => {
-    if (e.matches) {
+    if (e.matches && document.documentElement.scrollWidth > 1000) {
         console.log("Сейчас горизонтально");
-        window.isMobile = false; // Но помни: на ПК тоже бывает landscape!
+        window.isMobile = false;
     } else {
         console.log("Сейчас вертикально");
         window.isMobile = true;

@@ -13,13 +13,17 @@
         transform 0.35s cubic-bezier(0.2,0,0,1),
         opacity 0.25s ease;
     pointer-events: none;
+    overflow-x: hidden;
+
+    .pageContent {
+        padding: 0 var(--ds) !important;
+    }
     
     &.active {
         opacity: 1;
         transform: translateX(0);
         pointer-events: auto;
         z-index: 2;
-        padding-left: var(--ds) !important;
     }
 
     /* уходящая */
@@ -35,6 +39,11 @@
     /* твой blur */
     &:not(.active) {
         filter: blur(5px);
+    }
+
+    .pageContent {
+        max-width: 100%;
+        overflow-x: auto;
     }
 }
 
@@ -73,10 +82,10 @@
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: space-between;
-    width: 100%;
+    width: calc(100% - 2 * var(--ds));
     position: sticky;
     top: 0;
-    padding: var(--ds) 0;
+    padding: var(--ds);
     background-color: var(--bg-pri-great);
 
     button {
@@ -89,7 +98,6 @@
         top: 3rem;
         right: var(--dss);
         display: none;
-        padding: var(--dss);
         border-radius: var(--br);
         background-color: var(--bg-sec-great);
         min-width: 0;
@@ -97,23 +105,35 @@
         width: 0;
         height: 0;
         transition: all var(--tr-in);
+        transition: all 0.15s cubic-bezier(0.4, 0.0, 1, 1);
 
+        &:not(.active) {
+            min-width: 0;
+            min-height: 0;
+            overflow: hidden;
+            padding: 0;
+            display: inline-flex;
+            width: 0;
+            height: max-content;
+        }
         &.active {
             display: inline-flex;
-            min-width: 200px;
+            width: 200px;
             height: max-content;
+            padding: var(--dss);
+        }
+
+        button {
+            width: 100%;
+            display: inline-flex;
+            align-items: cente;
+            gap: var(--ds);
         }
     }
 
     .topNav {
         width: 100%;
-        display: inline-flex;
-        max-width: 100%;
-        height: max-content;
-        overflow-x: auto;
-        overflow-y: hidden;
-        gap: var(--dss);
-
+        /*
         button {
             padding: var(--dss);
             background-color: var(--bg-sec);
@@ -121,7 +141,7 @@
             &.active {
                 background-color: var(--ac-bg);
             }
-        }
+        }*/
     }
 }
 
@@ -134,13 +154,50 @@
     }
 
     .page.active {
-        width: calc(40% - 2 * var(--ds));
+        width: calc(40% - 0 * var(--ds));
 
         &.right {
-            width: calc(60% - 2 * var(--ds));
+            width: calc(60% - 0 * var(--ds));
             inset: unset;
             overflow-x: unset;
             right: 0;
+        }
+
+        .page-header-btns {
+            width: calc(100% - var(--ds) * 2);
+            z-index: 5;
+        }
+    }
+}
+#content.twomodal {
+    .page.right {
+        min-width: 0;
+        width: 0;
+        overflow-x: hidden;
+        position: absolute;
+        padding: 0 !important;
+        background: var(--bg-sec-great);
+        border-radius: calc(var(--br) * 1.2);
+        margin: var(--ds);
+        box-shadow: 0px 0px 25px 5px var(--bg-sec-great);
+        width: calc(40% - 2 * var(--ds));
+
+        &.active {
+            width: max(400px, calc(40% - 2 * var(--ds)));
+            inset: unset;
+            overflow-x: unset;
+            right: 0;
+            z-index: 10;
+        }
+
+        .pageContainer {
+            background-color: var(--bg-pri-great);
+            padding: 0 var(--ds) var(--ds) var(--ds);
+
+            .page-header-btns {
+                padding: 0;
+                width: 100%;
+            }
         }
     }
 }

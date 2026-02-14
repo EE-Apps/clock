@@ -114,7 +114,7 @@
                 transform: translateY(50rem);
             }
 
-            height: min(calc(25rem - var(--ds) * 2), calc(60dvh - var(--ds) * 2 - 50px));
+            max-height: min(calc(25rem - var(--ds) * 2), calc(60dvh - var(--ds) * 2 - 50px));
             bottom: var(--dss);
             display: grid;
             grid-template-columns: repeat(3, auto);

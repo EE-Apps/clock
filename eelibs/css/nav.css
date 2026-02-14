@@ -9,6 +9,8 @@
     min-width: 40px;
     max-width: max-content;
     padding-top: 50px;
+    max-height: calc(100dvh - 50px - var(--ds) - 32px);
+    overflow-y: auto;
     /*transform: translateX(-150%);*/
     &.active {
         /*transform: translateX(0);*/
@@ -57,6 +59,7 @@
             min-height: 40px;
             max-height: 40px;
         transition: var(--tr-in-out);
+        border: none;
         &.active {
             background-color: var(--bg-sec-hover);
             border-radius: var(--brs);
@@ -138,12 +141,5 @@
         img {
             width: 50%;
         }
-    }
-}
-
-.lefthead, .navRightMore {
-    button {
-        display: inline-flex;
-        align-items: center;
     }
 }

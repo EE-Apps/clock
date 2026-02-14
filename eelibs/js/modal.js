@@ -1,6 +1,6 @@
-// Кастомная модальная функция с пикерами в стиле Samsung One UI
+class ModalMgr {
 
-function createModalInput(id, labelText, type = 'text', placeholder = '', options = {}) {
+createModalInput(id, labelText, type = 'text', placeholder = '', options = {}) {
     const modalDiv = document.getElementById('modal-foruse') || document.createElement('div');
     modalDiv.innerHTML = '';
     modalDiv.id = 'modal-foruse';
@@ -104,7 +104,7 @@ function createModalInput(id, labelText, type = 'text', placeholder = '', option
         else if (additionalScripts === 'initCustomRange') initCustomRange(id);
         else if (additionalScripts === 'initFileInput') initFileInput(id);
         
-        setupModalEvents(modalDiv, id, type);
+        this.setupModalEvents(modalDiv, id, type);
     }, 0);
     
     return new Promise((resolve) => {
@@ -113,7 +113,7 @@ function createModalInput(id, labelText, type = 'text', placeholder = '', option
 }
 
 // Создание кастомного выбора даты
-function createCustomDatePicker(id) {
+createCustomDatePicker(id) {
     const today = new Date();
     const year = today.getFullYear();
     const month = today.getMonth();
@@ -148,7 +148,7 @@ function createCustomDatePicker(id) {
 }
 
 // Создание кастомного выбора времени
-function createCustomTimePicker(id) {
+createCustomTimePicker(id) {
     return `
         <div class="time-picker-container" id="${id}-container">
             <input type="hidden" id="${id}" name="${id}">
@@ -169,7 +169,7 @@ function createCustomTimePicker(id) {
 }
 
 // Создание кастомного выбора даты и времени
-function createCustomDateTimePicker(id) {
+createCustomDateTimePicker(id) {
     return `
         <div class="datetime-picker-container" id="${id}-container">
             <input type="hidden" id="${id}" name="${id}">
@@ -199,7 +199,7 @@ function createCustomDateTimePicker(id) {
 }
 
 // Создание кастомного выбора цвета
-function createCustomColorPicker(id, defaultColor) {
+createCustomColorPicker(id, defaultColor) {
     const presetColors = [
         '#FF0000', '#FF6B00', '#FFD600', '#00FF00', '#00FFFF', '#0066FF', '#9900FF', '#FF00FF',
         '#800000', '#804000', '#808000', '#008000', '#008080', '#000080', '#4B0082', '#800080',
@@ -235,7 +235,7 @@ function createCustomColorPicker(id, defaultColor) {
 }
 
 // Создание кастомного select
-function createCustomSelect(id, options) {
+createCustomSelect(id, options) {
     return `
         <div class="custom-select-container" id="${id}-container">
             <input type="hidden" id="${id}" name="${id}">
@@ -257,7 +257,7 @@ function createCustomSelect(id, options) {
 }
 
 // Создание кастомного range slider
-function createCustomRange(id, options = {}) {
+createCustomRange(id, options = {}) {
     const min = options.min || 0;
     const max = options.max || 100;
     const step = options.step || 1;
@@ -285,13 +285,13 @@ function createCustomRange(id, options = {}) {
 }
 
 // Вспомогательные функции
-function getMonthName(month) {
+getMonthName(month) {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 
                     'July', 'August', 'September', 'October', 'November', 'December'];
     return months[month];
 }
 
-function generateTimeOptions(start, end) {
+generateTimeOptions(start, end) {
     let html = '';
     for (let i = start; i <= end; i++) {
         const value = i.toString().padStart(2, '0');
@@ -301,7 +301,7 @@ function generateTimeOptions(start, end) {
 }
 
 // Инициализация Date Picker
-function initDatePicker(id) {
+initDatePicker(id) {
     const container = document.getElementById(`${id}-container`);
     const display = document.getElementById(`${id}-display`);
     const dropdown = document.getElementById(`${id}-dropdown`);
@@ -376,7 +376,7 @@ function initDatePicker(id) {
 }
 
 // Инициализация Time Picker
-function initTimePicker(id) {
+initTimePicker(id) {
     const dropdown = document.getElementById(`${id}-dropdown`);
     const input = document.getElementById(id);
     const hoursWheel = document.getElementById(`${id}-hours`);
@@ -420,7 +420,7 @@ function initTimePicker(id) {
 }
 
 // Инициализация DateTime Picker
-function initDateTimePicker(id) {
+initDateTimePicker(id) {
     const tabs = document.getElementById(`${id}-tabs`);
     const content = document.getElementById(`${id}-content`);
     const display = document.getElementById(`${id}-display`);
@@ -450,7 +450,7 @@ function initDateTimePicker(id) {
 }
 
 // Инициализация Color Picker
-function initColorPicker(id, defaultColor) {
+initColorPicker(id, defaultColor) {
     const display = document.getElementById(`${id}-display`);
     const dropdown = document.getElementById(`${id}-dropdown`);
     const input = document.getElementById(id);
@@ -496,7 +496,7 @@ function initColorPicker(id, defaultColor) {
 }
 
 // Инициализация Custom Select
-function initCustomSelect(id) {
+initCustomSelect(id) {
     const display = document.getElementById(`${id}-display`);
     const dropdown = document.getElementById(`${id}-dropdown`);
     const input = document.getElementById(id);
@@ -518,7 +518,7 @@ function initCustomSelect(id) {
 }
 
 // Инициализация Range Slider
-function initCustomRange(id) {
+initCustomRange(id) {
     const slider = document.getElementById(`${id}-slider`);
     const valueSpan = document.getElementById(`${id}-value`);
     const progress = document.getElementById(`${id}-progress`);
@@ -537,7 +537,7 @@ function initCustomRange(id) {
 }
 
 // Инициализация File Input
-function initFileInput(id) {
+initFileInput(id) {
     const fileInput = document.getElementById(id);
     const label = fileInput.nextElementSibling;
     const fileText = label.querySelector('.file-text');
@@ -557,7 +557,7 @@ function initFileInput(id) {
 }
 
 // Настройка событий модального окна
-function setupModalEvents(modalDiv, id, type) {
+setupModalEvents(modalDiv, id, type) {
     const cancelBtn = document.getElementById('cancel-modal');
     const submitBtn = document.getElementById('submit-modal');
     
@@ -594,9 +594,10 @@ function setupModalEvents(modalDiv, id, type) {
 }
 
 // Вспомогательная функция форматирования даты
-function formatDate(date) {
+formatDate(date) {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return date.toLocaleDateString('en-US', options);
 }
+}
 
-window.createModalInput = createModalInput;
+window.modalMgr = new ModalMgr;

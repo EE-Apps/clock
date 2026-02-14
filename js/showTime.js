@@ -94,7 +94,7 @@ function updateWorldTime() {
             
             const cityName = document.createElement('h2');
             cityName.className = 'cityName';
-            cityName.textContent = `${escapeHtml(place.name)}:`;
+            cityName.textContent = `${escapeHtml(place.name)}`;
             
             const diffEl = document.createElement('p');
             diffEl.className = 'time-diff';
