@@ -55,6 +55,7 @@ window.pages = [
         id: 'settings',
         title: 'Настройки',
         icon: 'img/ui/settings.svg',
+        leftBtn: 'back',
         noBottom: true,
     },
 ];
