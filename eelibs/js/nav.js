@@ -181,7 +181,7 @@ class Nav {
         btn.onclick = () => {
             if (page.id == 'MORE') {
                 content.classList.toggle('modal-open');
-                document.getElementById('moreDiv').classList.toggle('active');
+                document.getElementById('modalMoreMain').classList.toggle('active');
                 return;
             } else {
                 changePage(page.id);
@@ -191,110 +191,150 @@ class Nav {
     }
 
     createNavMoreButton(page) {
-        let moreDiv = document.getElementById('moreDiv');
-        let btn = document.createElement('button');
+        const modalForuse = document.getElementById('modalForuse');
+        if (!modalForuse) {
+            console.error('Элемент #modalForuse не найден в разметке');
+            return;
+        }
+
+        const btn = document.createElement('button');
         btn.classList.add('navbtn');
-        btn.innerHTML = `<img src="${page.icon}"><span>${page.title}</span>`;
+        btn.innerHTML = `<img src="${page.icon}" alt=""><span>${page.title}</span>`;
+        
         btn.onclick = () => {
-            content.classList.remove('modal-open');
-            document.getElementById('moreDiv').classList.remove('active');
-            document.querySelectorAll('.navbtn.active').forEach(element => {
-                element.classList.remove('active');
+            // Снимаем активный класс со всех кнопок навигации
+            document.querySelectorAll('.navbtn.active').forEach(el => {
+                el.classList.remove('active');
             });
+            
+            // Переключаем страницу
             switchPage(document.getElementById(page.id));
             btn.classList.add('active');
+            
+            // Закрываем модальное окно через родительский .modal
+            const modalWindow = modalForuse.closest('.modal');
+            if (modalWindow) {
+                modalWindow.classList.remove('active');
+            }
         };
-        moreDiv.appendChild(btn);
+        
+        modalForuse.appendChild(btn);
     }
 
     createNav(pages) {
         const MAX_NAVDOWN = 4;
+        
+        // === РАБОТА С КОНТЕЙНЕРОМ "ЕЩЁ" ===
+        const modalDiv = document.createElement('div');
+        const modalForuse = document.createElement('div');
+        const modalContent = document.createElement('div');
+        modalDiv.className = 'modal';
+        modalDiv.id = 'modalMoreMain';
+        modalForuse.className = 'dialog input';
+        modalForuse.innerHTML = '';
+        modalForuse.id = 'modalForuse';
+        modalContent.className = 'modal-content moreDiv';
+        this.content.appendChild(modalDiv);
+        modalDiv.appendChild(modalForuse);
+        modalForuse.appendChild(modalContent);
 
-        // готовим moreDiv
-        let moreDiv = document.getElementById('moreDiv');
-        if (!moreDiv) {
-            moreDiv = document.createElement('div');
-            moreDiv.id = 'moreDiv';
-            moreDiv.className = 'modal dialog';
-            content.appendChild(moreDiv);
-        } else {
-            moreDiv.innerHTML = '';
-        }
+        // завершить создание и включение стилей
 
-        // считаем страницы без noBottom
+        // Фильтруем страницы для нижней панели
         const bottomPages = pages.filter(p => !p.noBottom);
-
         const needMore = bottomPages.length > MAX_NAVDOWN;
         const maxDirect = needMore ? MAX_NAVDOWN - 1 : MAX_NAVDOWN;
-
+        
         let addedDirect = 0;
         let overflowCount = 0;
 
-        for (let page of pages) {
-            let btn = document.createElement('button');
+        for (const page of pages) {
+            // === СОЗДАНИЕ ОСНОВНОЙ КНОПКИ НАВИГАЦИИ ===
+            const btn = document.createElement('button');
             btn.classList.add('navbtn');
-
-            if (page.active) {
-                btn.classList.add('active');
-                document.getElementById(page.id).classList.add('active');
-            }
-
-            btn.innerHTML = `<img src="${page.icon}"><span>${page.title}</span>`;
+            if (page.active) btn.classList.add('active');
+            if (page.active) document.getElementById(page.id).classList.add('active');
+            console.log(page.id, page.active);
+            btn.innerHTML = `<img src="${page.icon}" alt=""><span>${page.title}</span>`;
             btn.id = `${page.id}-navc`;
-
+            
             btn.onclick = () => {
-                document.querySelectorAll('.navbtn.active').forEach(el => {
-                    el.classList.remove('active');
-                });
+                document.querySelectorAll('.navbtn.active').forEach(el => el.classList.remove('active'));
                 switchPage(document.getElementById(page.id));
                 btn.classList.add('active');
             };
-
-            page.id == 'settings' ? window.cnavMgr.nav.appendChild(btn) : window.cnavMgr.navContent.appendChild(btn);
-
-            // ===== НИЖНЯЯ НАВИГАЦИЯ =====
-            if (!page.noBottom && addedDirect < maxDirect) {
-                // обычные кнопки вниз
-                window.cnavMgr.createNavDownButton(page);
-                addedDirect++;
-            } 
-            else if (!page.noBottom) {
-                // кнопки в MORE — создаём ВРУЧНУЮ
-                let moreBtn = document.createElement('button');
-                moreBtn.className = 'navbtn';
-                moreBtn.innerHTML = `<img src="${page.icon}"><span>${page.title}</span>`;
-                moreBtn.onclick = () => {
-                    switchPage(document.getElementById(page.id));
-                    content.classList.remove('modal-open');
-                    document.getElementById('moreDiv').classList.remove('active');
-                }
-                moreDiv.appendChild(moreBtn);
-
-                overflowCount++;
+            
+            // Распределяем кнопки по контейнерам
+            if (page.id === 'settings') {
+                window.cnavMgr.nav.appendChild(btn);
+            } else {
+                window.cnavMgr.navContent.appendChild(btn);
             }
 
+            // === ОБРАБОТКА НИЖНЕЙ ПАНЕЛИ ===
+            if (!page.noBottom) {
+                if (addedDirect < maxDirect) {
+                    // Прямые кнопки в нижней панели
+                    window.cnavMgr.createNavDownButton(page);
+                    addedDirect++;
+                } else {
+                    // Кнопки в модальном окне "Ещё"
+                    const moreBtn = document.createElement('button');
+                    moreBtn.className = 'navbtn';
+                    moreBtn.innerHTML = `<img src="${page.icon}" alt=""><span>${page.title}</span>`;
+                    
+                    moreBtn.onclick = () => {
+                        // Снимаем активные состояния
+                        document.querySelectorAll('.navbtn.active').forEach(el => el.classList.remove('active'));
+                        
+                        // Переключаем страницу
+                        switchPage(document.getElementById(page.id));
+                        
+                        // Закрываем модальное окно
+                        const modalWindow = modalDiv.closest('.modal');
+                        if (modalWindow) {
+                            modalWindow.classList.remove('active');
+                        }
+                    };
+                    
+                    modalContent.appendChild(moreBtn);
+                    overflowCount++;
+                }
+            }
+            
             window.cnavMgr.createHeadOfPage(page);
         }
 
-        // кнопка MORE только если есть лишние
+        // === КНОПКА "ЕЩЁ" В НИЖНЕЙ ПАНЕЛИ ===
         if (needMore && overflowCount > 0) {
-            window.cnavMgr.createNavDownButton({
-                id: 'MORE',
-                title: 'Ещё',
-                icon: 'img/ui/lines.svg',
-            });
+            // Создаём кнопку "Ещё" с обработчиком открытия модалки
+            const moreNavBtn = document.createElement('button');
+            moreNavBtn.className = 'navbtn';
+            moreNavBtn.innerHTML = `<img src="img/ui/lines.svg" alt="Ещё"><span>Ещё</span>`;
+            moreNavBtn.id = 'more-nav-btn';
+            
+            moreNavBtn.onclick = () => {
+                // Открываем модальное окно
+                const modalWindow = modalDiv.closest('.modal');
+                if (modalWindow) {
+                    modalWindow.classList.toggle('active');
+                }
+                
+                // Визуальная обратная связь (опционально)
+                //document.querySelectorAll('.navbtn.active').forEach(el => el.classList.remove('active'));
+                moreNavBtn.classList.toggle('active');
+            };
+            
+            window.cnavMgr.navDown.appendChild(moreNavBtn); // Предполагается, что navDown — контейнер нижней панели
         }
 
-        if (pages.length < 6) {
-            document.body.classList.add('nav-fewpages');
-        } else {
-            document.body.classList.remove('nav-fewpages');
-        }
+        // === АДАПТАЦИЯ СТИЛЕЙ ПОД КОЛИЧЕСТВО СТРАНИЦ ===
+        document.body.classList.toggle('nav-fewpages', pages.length < 6);
     }
 
 
     getActivePage() {
-        return document.querySelector('.page.active');
+        return document.querySelector('.page.active') || document.querySelector('.page');
     }
 
     scrollToTop() {
@@ -334,7 +374,8 @@ class Nav {
         }
 
         // если сейчас активна подстраница — берём её родителя
-        const basePage = current.dataset.parent && document.getElementById(current.dataset.parent).classList.contains('active')
+        const parentElement = document.getElementById(current?.dataset?.parent); 
+        const basePage = current?.dataset?.parent && parentElement?.classList.contains('active')
             ? document.getElementById(current.dataset.parent)
             : current;
 
@@ -461,6 +502,6 @@ console.log('NavManager инициализирован:', window.cnavMgr);
 
 window.switchPage   = window.cnavMgr.switchPage;
 window.changePage   = window.cnavMgr.changePage;
-window.createNav= window.cnavMgr.createNav;
+window.createNav    = window.cnavMgr.createNav;
 window.openNavPanel = window.cnavMgr.openNavPanel;
 window.returnToPage = window.cnavMgr.returnToPage

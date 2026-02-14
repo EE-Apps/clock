@@ -23,6 +23,7 @@
 
         &:hover {
             background-color: var(--bg-sec-hover);
+            color: var(--text-pri);
         }
 
         img {

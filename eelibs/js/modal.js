@@ -1,10 +1,14 @@
 class ModalMgr {
 
 createModalInput(id, labelText, type = 'text', placeholder = '', options = {}) {
-    const modalDiv = document.getElementById('modal-foruse') || document.createElement('div');
+    const modalBg = document.getElementById('modal') || document.createElement('div');
+    modalBg.innerHTML = '';
+    modalBg.id = 'modal';
+    modalBg.className = 'modal active'
+    const modalDiv = document.getElementById('modalForuse') || document.createElement('div');
     modalDiv.innerHTML = '';
-    modalDiv.id = 'modal-foruse';
-    modalDiv.className = 'modal active dialog input';
+    modalDiv.id = 'modalForuse';
+    modalDiv.className = 'dialog input';
     
     let content = '';
     let additionalScripts = '';
@@ -92,7 +96,8 @@ createModalInput(id, labelText, type = 'text', placeholder = '', options = {}) {
     `;
     
     document.getElementById('content')?.classList.add('modal-open');
-    document.body.appendChild(modalDiv);
+    modalBg.appendChild(modalDiv);
+    document.body.appendChild(modalBg);
     
     // Инициализация кастомных элементов
     setTimeout(() => {
@@ -561,6 +566,8 @@ setupModalEvents(modalDiv, id, type) {
     const cancelBtn = document.getElementById('cancel-modal');
     const submitBtn = document.getElementById('submit-modal');
     
+    const modalBg = document.getElementById('modal') || document.createElement('div');
+    
     // Закрытие dropdown при клике вне
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.date-picker-container') && 
@@ -575,7 +582,7 @@ setupModalEvents(modalDiv, id, type) {
     });
     
     cancelBtn.addEventListener('click', () => {
-        modalDiv.remove();
+        modalBg.remove();
         document.getElementById('content')?.classList.remove('modal-open');
     });
     
@@ -585,7 +592,7 @@ setupModalEvents(modalDiv, id, type) {
         
         // Здесь можно добавить валидацию
         
-        modalDiv.remove();
+        modalBg.remove();
         document.getElementById('content')?.classList.remove('modal-open');
         
         // Возврат значения через промис
